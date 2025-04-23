@@ -1,0 +1,58 @@
+.file-selection{
+    &__online{
+        border: 1px solid grey;
+        border-radius: 5px;
+        padding: 5px 20px;
+        margin: 10px 0;
+
+        &--header{
+            font-weight: bold;
+            margin: 5px 0;
+            text-align: center;
+        }
+
+        &--title1, &--title2{
+            margin: 5px 0;
+        }
+
+        &--sign{
+            display: flex;
+            align-items: center;
+
+            p{
+                margin: 5px 0;
+            }
+
+            input{
+                margin: 5px 0 0 5px;
+                cursor: pointer;
+            }
+        }
+    }
+
+    &__offline{
+        border: 1px solid grey;
+        border-radius: 5px;
+        padding: 5px 20px;
+        margin: 10px 0;
+
+        &--title{
+            font-weight: bold;
+            margin: 5px 0;
+            text-align: center;
+        }
+    }
+
+    &__Selected-file{
+        border: 1px solid grey;
+        border-radius: 5px;
+        padding: 5px 20px;
+        margin: 10px 0;
+    
+        &--title {
+            font-weight: bold;
+            margin: 5px 0;
+            text-align: center;
+        }
+    }
+}

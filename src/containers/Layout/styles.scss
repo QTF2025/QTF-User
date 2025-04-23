@@ -1,0 +1,26 @@
+@import '../../utils/styles/global.scss';
+
+.layout{
+    &__body{
+        padding: 48px;
+        background-image: url('../../assets/images/image.jpg') !important;
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        
+        &--header{
+            background-color: black;
+            text-align: center;
+            color: white;
+        }
+
+        &--text{
+            padding: 10px;
+            margin: 0;
+        }
+
+        @include breakpoint(sm) {
+            padding: 0 !important;
+        }
+    }
+}
