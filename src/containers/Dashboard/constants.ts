@@ -3,19 +3,19 @@ export const stepItems = [
           title: 'Lead Generation',
         },
         {
-          title: 'In Process',
+          title: 'In Documents',
         },
+        // {
+        //   title: 'In Preparation',
+        // },
         {
-          title: 'In Preparation',
-        },
-        {
-          title: 'In Review ',
+          title: 'In Preparation ',
         },
         {
           title: 'In Payments',
         },
         {
-          title: 'In Submission',
+          title: 'In Filling',
         },
         {
           title: 'Completed',

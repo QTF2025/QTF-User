@@ -1,6 +1,6 @@
 import React from 'react'
 import { HEADER_CONTACT_NUMBER, HEADER_CONTACT_EMAIL, LOGIN_TEXT, LOGOUT_TEXT } from './constants'
-import Logo from '../../assets/images/crescenttaxfiling.png'
+import Logo from '../../assets/images/qtflogo1.png'
 import { PhoneOutlined, MailOutlined } from "@ant-design/icons";
 import { IHeader } from './model'
 import { useNavigate } from 'react-router-dom';

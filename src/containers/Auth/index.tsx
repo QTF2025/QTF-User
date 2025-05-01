@@ -7,6 +7,7 @@ import { IInitialState } from '../../store/reducers/models';
 import { useNavigate } from 'react-router-dom';
 import { setShowValidateOtp, setError } from '../../store/reducers'
 import './styles.scss'
+import logo from '../../assets/images/qtflogo.png'
 
 const Auth = () => {
     const [reSendOtp, setResendOtp] = useState<boolean>(false)
@@ -52,7 +53,7 @@ const Auth = () => {
     return (
         <div className="auth-container">
             <div className="auth-container__login">
-                <h3 className="auth-container__login--title">Login to Quess Tax Filing </h3>
+                <h3 className="auth-container__login--title"><img src={logo} alt='logo' style={{width: '40%'}} /></h3>
                {
                 showValidateOtp ? (
                      <>
@@ -85,7 +86,7 @@ const Auth = () => {
                                     <Button type="default" onClick={submitresendOtp}>
                                         Resend
                                     </Button>
-                                    <Button type="primary" style={{marginLeft: '5px'}} onClick={onSubmitOtp}>
+                                    <Button className='loginbutton' type="primary" style={{marginLeft: '5px'}} onClick={onSubmitOtp}>
                                         Submit
                                     </Button>
                                 </div>
