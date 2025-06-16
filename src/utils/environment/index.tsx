@@ -1,8 +1,10 @@
 import axios from 'axios';
 import localStorageContent from '../localstorage';
+<<<<<<< HEAD
 const URL = axios.create({
     baseURL: process.env.REACT_APP_API_URL
 })
+
 
 URL.interceptors.request.use(
     async (config: any) => {
