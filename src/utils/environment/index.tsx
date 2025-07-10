@@ -5,7 +5,6 @@ const URL = axios.create({
     baseURL: process.env.REACT_APP_API_BASE_URL
 })
 
-
 URL.interceptors.request.use(
     async (config: any) => {
         config.headers = {

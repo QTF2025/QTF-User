@@ -1,41 +1,43 @@
-.header{
-    .header-first {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.9rem 2rem;
-        background: #72ad32;
-        color: white;
+.header {
+  .header-first {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.9rem 2rem;
+    background: #efefef;
+    color: #000;
 
-        &__contact-number {
-            display: flex;
-            align-items: center;
+    &__contact-number {
+      display: flex;
+      align-items: center;
 
-            &--text {
-                margin: 0 10px;
-            }
-        }
-
-        &__user-details {
-            display: flex;
-            align-items: center;
-
-            &--text {
-                &:nth-child(1) {
-                    margin-right: 20px;
-                }
-
-                &:nth-child(2) {
-                    font-weight: bold;
-                    cursor: pointer;
-                }
-
-                margin: 0 5px;
-            }
-        }
+      &--text {
+        margin: 0 10px;
+        // css cheanges
+      }
     }
 
-    .header-second{
-        padding: 0.9rem 2rem;
-        background-color: white;
+    &__user-details {
+      // display: flex;
+      align-items: center;
+      text-align: right;
+
+      &--text {
+        &:nth-child(1) {
+          margin-right: 20px;
+        }
+
+        &:nth-child(2) {
+          cursor: pointer;
+          margin-top: 10px;
+        }
+
+        margin: 0 5px;
+      }
     }
+  }
+
+  .header-second {
+    padding: 0.9rem 2rem;
+    background-color: white;
+  }
 }
