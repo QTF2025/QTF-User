@@ -86,7 +86,7 @@ export const isEmptyKeys1 = async (
         }
       });
     case "ALL":
-      return await isValidData(dataObj, validateKeys)
+      return await isValidData(dataObj, validateKeys);
     default:
       return true;
   }
@@ -134,61 +134,60 @@ export const isEmptyKeys = (
 };
 
 export const generateTaxYearMonth = () => {
-    const month = new Date().getMonth()
-    if(month > 2){
-        return true;
-    }else{
-        return false;
-    }
-}
-
+  const month = new Date().getMonth();
+  if (month > 2) {
+    return true;
+  } else {
+    return false;
+  }
+};
 
 export const downloadFile = (url: string) => {
-  const a = window.document.createElement('a')
+  const a = window.document.createElement("a");
   a.href = url;
-  window.document.body.appendChild(a)
-  a.click()
-  window.document.body.removeChild(a)
-}
+  window.document.body.appendChild(a);
+  a.click();
+  window.document.body.removeChild(a);
+};
 
-export  const getLeadStatus = (id: any) => {
-    let status;
-    switch(id) {
-      case '1':
-          status = "Process"
-        return status;
-      case '2':
-          status = "Preparation"
-        return status;
-      case '3':
-          status = "Review"
-        return status;
-      case '4':
-          status = "Finance"
-        return status;
-      case '6':
-          status = "Submission"
-        return status;
-      case '7':
-          status = "Completed"
-        return status;
-      default:
-        return '';
-    }
+export const getLeadStatus = (id: any) => {
+  let status;
+  switch (id) {
+    case "1":
+      status = "Documents";
+      return status;
+    // case '2':
+    //     status = "Preparation"
+    //   return status;
+    case "3":
+      status = "Preparation";
+      return status;
+    case "4":
+      status = "Payments";
+      return status;
+    case "6":
+      status = "Filling";
+      return status;
+    case "7":
+      status = "Completed";
+      return status;
+    default:
+      return "";
   }
+};
 
-  export const fileNames = (arr:any) => {
-    const newstr =  arr?.replaceAll('//uploads','/uploads');
-    const urlArray = newstr.split(',');
-    return urlArray.map((url:any) => {
-        const segments = url.split('/');
-        const fileName = segments[segments.length - 1];
-        return (
-            <span key={fileName} style={{ marginRight: '10px' }}>
-            <a href={url} target="_blank" rel="noopener noreferrer" key={fileName}>
-                {fileName}
-            </a>
-            </span>
-        );
-    });
+export const fileNames = (arr: any) => {
+  const newstr = arr?.replaceAll("//uploads", "/uploads");
+  const urlArray = newstr.split(",");
+  return urlArray.map((url: any) => {
+    const segments = url.split("/");
+    const fileName = segments[segments.length - 1];
+    return (
+      <span key={fileName} style={{ marginRight: "10px" }}>
+        <a href={url} target="_blank" rel="noopener noreferrer" key={fileName}>
+          {fileName}
+        </a>
+      </span>
+    );
+  });
 };
