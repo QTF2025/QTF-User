@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import localStorageContent from "../../../utils/localstorage";
 import { useDispatch, useSelector } from "react-redux";
+import Icon, { DiffOutlined } from "@ant-design/icons";
 import { Pagination, Table } from "antd";
 import { setError } from "../../../store/reducers";
 import axiosInstance from "../../../utils/environment/index";
@@ -24,10 +25,10 @@ function TaxesList() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [checkedReopenLead, setCheckedReOpenLead] = useState<boolean>(false);
-  const toggleReopenLeadCheckbox = (_boolean: boolean, id=Number) => {
-    setLeadId(id)
+  const toggleReopenLeadCheckbox = (_boolean: boolean, id = Number) => {
+    setLeadId(id);
     setCheckedReOpenLead(!checkedReopenLead);
-    console.log('veeru', id)  
+    console.log("veeru", id);
   };
   const columns: any = [
     {
@@ -39,16 +40,6 @@ function TaxesList() {
       title: "Lead Id",
       dataIndex: "lead_id",
       key: "lead_id",
-      render: (leadId: any) => (
-        <span
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            navigate(`/user?lead_id=${leadId}`);
-          }}
-        >
-          Lead #{leadId}
-        </span>
-      ),
     },
     {
       title: "Date",
@@ -63,23 +54,60 @@ function TaxesList() {
       render: (leadStatus: any) => getLeadStatus(leadStatus),
     },
     {
-        title: "Action",
-        dataIndex: "action",
-        key: "action",
-
-        render: (rowItem:any, row:any) => (
-          <div className="dashboard__header--reopen">
-            {row.lead_status === "7" && (
-              <>
-              <p style={{fontSize:'small', padding:0}}>{row.reopen_request === "1" ? 'Re-Open Processing':<Checkbox
+      title: "Action",
+      dataIndex: "action",
+      key: "action",
+      render: (rowItem: any, row: any) => (
+        <div>
+          {row.lead_status === "7" ? (
+            <p
+              style={{
+                fontSize: "small",
+                padding: 0,
+                margin: 0,
+                textAlign: "left",
+              }}
+            >
+              <span
+                style={{
+                  cursor: "pointer",
+                  color: "#1890ff",
+                  marginRight: "20px",
+                }}
+                onClick={() => {
+                  navigate(`/user?lead_id=${row.lead_id}`);
+                }}
+              >
+                <b>
+                  <DiffOutlined /> View Tax File
+                </b>
+              </span>
+              {row.reopen_request === "1" ? (
+                "Re-Open Processing"
+              ) : (
+                <Checkbox
                   checked={checkedReopenLead}
-                  onChange={(e) => toggleReopenLeadCheckbox(true, row.lead_id)}
-                >Re-Open</Checkbox>    }</p>
-              </>
-            )}
-          </div>
-        ),
-      },
+                  onChange={() => toggleReopenLeadCheckbox(true, row.lead_id)}
+                >
+                  Re-Open
+                </Checkbox>
+              )}
+            </p>
+          ) : (
+            <span
+              style={{ cursor: "pointer", color: "#1890ff" }}
+              onClick={() => {
+                navigate(`/user?lead_id=${row.lead_id}`);
+              }}
+            >
+              <b>
+                <DiffOutlined /> View Tax File
+              </b>
+            </span>
+          )}
+        </div>
+      ),
+    },
   ];
 
   const fetchTaxesList = async () => {
@@ -87,13 +115,16 @@ function TaxesList() {
       setIsLoading(true);
       const response = await axiosInstance.get(`/leads`);
       const data = response.data;
-      const taxyears = data.data.map((item:any) => {
-        return item.itr_year
-      })
-      sessionStorage.setItem('taxyears', JSON.stringify(Object.values(taxyears)))
-      const datas = data.data.filter((item:any) => item.lead_status > 2)
-      if(datas.length > 0) {
-        sessionStorage.setItem('newappleadid', datas[0].lead_id)
+      const taxyears = data.data.map((item: any) => {
+        return item.itr_year;
+      });
+      sessionStorage.setItem(
+        "taxyears",
+        JSON.stringify(Object.values(taxyears))
+      );
+      const datas = data.data.filter((item: any) => item.lead_status > 2);
+      if (datas.length > 0) {
+        sessionStorage.setItem("newappleadid", datas[0].lead_id);
       }
       if (data && response?.data?.data?.length > 0) {
         setTaxesList(response?.data?.data);
@@ -140,7 +171,7 @@ function TaxesList() {
       />
       <ReopenLead
         isChecked={checkedReopenLead}
-        leadId={leadId}  // Use row.lead_id here
+        leadId={leadId} // Use row.lead_id here
         toggleReopenLeadCheckbox={toggleReopenLeadCheckbox}
       />
     </div>

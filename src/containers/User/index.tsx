@@ -1,288 +1,356 @@
-import React, { useEffect } from 'react'
-import { Collapse, Tabs } from 'antd';
-import { useDispatch, useSelector } from 'react-redux'
-import GeneralInformation from './GeneralInformation';
-import Residency from './Residency';
-import BankAccountDetails from './BankAccountDetails';
-import DayCareExpense from './DayCareExpense';
-import RentalIncomeExpense from './RentalIncomeExpense';
-import SelfEmployment from './SelfEmployment';
-import EstimatedTaxPayments from './EstimatedTaxPayments';
-import FbarFatca from './FbarFatca';
-import OtherIncome from './OtherIncome';
-import AdjustmentIncome from './AdjustmentIncome';
-import MedicalExpenses from './MedicalExpenses';
-import TaxPaid from './TaxPaid';
-import Documents from './Document\'s';
-import localStorageContent from '../../utils/localstorage';
-import { initGetLead } from '../../store/actions/creators';
-import { useLocation, useNavigate } from 'react-router-dom';
-import './styles.scss'
-import IncomeInformation from './IncomeInformation';
-import { IInitialState } from '../../store/reducers/models';
-
+import React, { useEffect, useState } from "react";
+import { Collapse, Tabs } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import GeneralInformation from "./GeneralInformation";
+import Residency from "./Residency";
+import BankAccountDetails from "./BankAccountDetails";
+import DayCareExpense from "./DayCareExpense";
+import RentalIncomeExpense from "./RentalIncomeExpense";
+import SelfEmployment from "./SelfEmployment";
+import EstimatedTaxPayments from "./EstimatedTaxPayments";
+import FbarFatca from "./FbarFatca";
+import OtherIncome from "./OtherIncome";
+import AdjustmentIncome from "./AdjustmentIncome";
+import MedicalExpenses from "./MedicalExpenses";
+import TaxPaid from "./TaxPaid";
+import Documents from "./Document's";
+import localStorageContent from "../../utils/localstorage";
+import {
+  initGetLead,
+  getComments,
+  getReviews,
+} from "../../store/actions/creators";
+import { useLocation, useNavigate } from "react-router-dom";
+import "./styles.scss";
+import IncomeInformation from "./IncomeInformation";
+import { IInitialState } from "../../store/reducers/models";
+import FileSelection from "../Dashboard/FileSelection";
+import Stepper from "../Dashboard/Steps";
+import Comments from "../Dashboard/Comments";
+import CommentBox from "../Dashboard/CommentBox";
+import ReopenLead from "../Dashboard/ReopenLead";
+import Icon, { CustomerServiceOutlined } from "@ant-design/icons";
+import ModalPopUp from "../../components/Modal";
+import Support from "../Dashboard/Support";
 
 const { Panel } = Collapse;
 
 const User = () => {
+  const [checkedReopenLead, setCheckedReOpenLead] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const gloablStore = useSelector((state: any) => state.store)
-  const { isleadDetailsLoading, leadData }: IInitialState = gloablStore
-  const location = useLocation()
+  const gloablStore = useSelector((state: any) => state.store);
+  const { isleadDetailsLoading, leadData, comments }: IInitialState =
+    gloablStore;
+  const location = useLocation();
+  const localStoreData = localStorageContent.getUserData();
+  const [leadStatusId, setLeadStatusId] = useState<string>("");
+  const [showSupportModal, setShowSupportModal] = useState<boolean>(false);
+  const [isNewApplication, setIsNewApplication] = useState(false);
+  const toggleReopenLeadCheckbox = () => {
+    setCheckedReOpenLead(!checkedReopenLead);
+  };
 
   const panelItems: any = [
     {
-      key: '1',
+      key: "1",
       Component: GeneralInformation,
-      header: 'General Information',
+      header: "General Information",
     },
     {
-      key: '1',
+      key: "1",
       Component: Residency,
-      header: 'States (US) of Residency',
+      header: "States (US) of Residency",
     },
     {
-      key: '1',
+      key: "1",
       Component: BankAccountDetails,
-      header: 'Bank Account Details',
+      header: "Bank Account Details",
     },
-   
+
     {
-      key: '2',
+      key: "2",
       Component: IncomeInformation,
-      header: 'Income Information'
+      header: "Income Information",
     },
     {
-      key: '2',
+      key: "2",
       Component: RentalIncomeExpense,
-      header: 'Rental Income and Expenses'
+      header: "Rental Income and Expenses",
     },
     {
-      key: '2',
+      key: "2",
       Component: SelfEmployment,
-      header: 'Self Employment Information'
+      header: "Self Employment Information",
     },
     {
-      key: '2',
+      key: "2",
       Component: OtherIncome,
-      header: 'Other Income'
+      header: "Other Income",
     },
-    
+
     {
-      key: '4',
+      key: "4",
       Component: FbarFatca,
-      header: 'FBAR / FATCA'
+      header: "FBAR / FATCA",
     },
     {
-      key: '3',
+      key: "3",
       Component: MedicalExpenses,
-      header: 'Itemized Deductions'
+      header: "Itemized Deductions",
     },
-     {
-      key: `${leadData && leadData?.dependentDetails?.length > 0 ? '3' : ''}`,
+    {
+      key: `${leadData && leadData?.dependentDetails?.length > 0 ? "3" : ""}`,
       Component: DayCareExpense,
-      header: 'Day Care Expense',
+      header: "Day Care Expense",
     },
     {
-      key: '3',
+      key: "3",
       Component: EstimatedTaxPayments,
-      header: 'Estimated Tax Payments'
+      header: "Estimated Tax Payments",
     },
     {
-      key: '3',
+      key: "3",
       Component: AdjustmentIncome,
-      header: 'Adjustments Income'
+      header: "Adjustments Income",
     },
     {
-      key: '3',
+      key: "3",
       Component: TaxPaid,
-      header: 'Taxes Paid'
+      header: "Taxes Paid",
     },
     {
-      key: '5',
+      key: "5",
       Component: Documents,
-      header: 'Documents'
-    }
-  ]
+      header: "Documents",
+    },
+  ];
 
   const tabItems: any = [
-      {
-          key: '1',
-          label: 'General Information',
-          children: <>
-            {
-               <Collapse accordion defaultActiveKey={["0"]}>
-                {
-                  panelItems.map(({ key, header, Component }: any, index: any) => key === '1' && (
-                    <Panel header={header} key={index} disabled={!leadData && header !== 'General Information'}>
+    {
+      key: "1",
+      label: "General Information",
+      children: (
+        <>
+          {
+            <Collapse accordion defaultActiveKey={["0"]}>
+              {panelItems.map(
+                ({ key, header, Component }: any, index: any) =>
+                  key === "1" && (
+                    <Panel
+                      header={header}
+                      key={index}
+                      disabled={!leadData && header !== "General Information"}
+                    >
                       <Component />
                     </Panel>
-                  ))
-                }
-              </Collapse>
-            }
-          </>,
-      },
-      {
-          key: '2',
-          label: 'Income Details',
-          children: <>
-            {
-               <Collapse accordion defaultActiveKey={[leadData ? "3" : ""]} >
-                {
-                  panelItems.map(({ key, header, Component }: any, index: any) => key === '2' && (
+                  )
+              )}
+            </Collapse>
+          }
+        </>
+      ),
+    },
+    {
+      key: "2",
+      label: "Income Details",
+      children: (
+        <>
+          {
+            <Collapse accordion defaultActiveKey={[leadData ? "3" : ""]}>
+              {panelItems.map(
+                ({ key, header, Component }: any, index: any) =>
+                  key === "2" && (
                     <Panel header={header} key={index} disabled={!leadData}>
                       <Component />
                     </Panel>
-                  ))
-                }
-              </Collapse>
-            }
-          </>,
-      },
-      {
-          key: '3',
-          label: 'Expenses or Deductions',
-          children: <>
-            {
-               <Collapse accordion defaultActiveKey={[leadData ? "8" : ""]}>
-                {
-                  panelItems.map(({ key, header, Component }: any, index: any) => key === '3' && (
+                  )
+              )}
+            </Collapse>
+          }
+        </>
+      ),
+    },
+    {
+      key: "3",
+      label: "Expenses or Deductions",
+      children: (
+        <>
+          {
+            <Collapse accordion defaultActiveKey={[leadData ? "8" : ""]}>
+              {panelItems.map(
+                ({ key, header, Component }: any, index: any) =>
+                  key === "3" && (
                     <Panel header={header} key={index} disabled={!leadData}>
                       <Component />
                     </Panel>
-                  ))
-                }
-              </Collapse>
-            }
-          </>,
-      },
-      {
-          key: '4',
-          label: 'Misc (FBAR and Foreign Info)',
-          children: <>
-            {
-               <Collapse accordion defaultActiveKey={[leadData ? "7" : ""]}>
-                {
-                  panelItems.map(({ key, header, Component }: any, index: any) => key === '4' && (
+                  )
+              )}
+            </Collapse>
+          }
+        </>
+      ),
+    },
+    {
+      key: "4",
+      label: "Misc (FBAR and Foreign Info)",
+      children: (
+        <>
+          {
+            <Collapse accordion defaultActiveKey={[leadData ? "7" : ""]}>
+              {panelItems.map(
+                ({ key, header, Component }: any, index: any) =>
+                  key === "4" && (
                     <Panel header={header} key={index} disabled={!leadData}>
                       <Component />
                     </Panel>
-                  ))
-                }
-              </Collapse>
-            }
-          </>,
-      },
-      {
-          key: '5',
-          label: 'Documents',
-          children: <>
-            {
-               <Collapse accordion defaultActiveKey={[leadData ? "13" : ""]}>
-                {
-                  panelItems.map(({ key, header, Component }: any, index: any) => key === '5' && (
+                  )
+              )}
+            </Collapse>
+          }
+        </>
+      ),
+    },
+    {
+      key: "5",
+      label: "Documents",
+      children: (
+        <>
+          {
+            <Collapse accordion defaultActiveKey={[leadData ? "13" : ""]}>
+              {panelItems.map(
+                ({ key, header, Component }: any, index: any) =>
+                  key === "5" && (
                     <Panel header={header} key={index} disabled={!leadData}>
                       <Component />
                     </Panel>
-                  ))
-                }
-              </Collapse>
-            }
-          </>,
-      }
+                  )
+              )}
+            </Collapse>
+          }
+        </>
+      ),
+    },
   ];
-  
+
+  const toggleSupportModal = () => {
+    setShowSupportModal(!showSupportModal);
+  };
 
   useEffect(() => {
-    const userData = localStorageContent.getUserData()
-    const queryPrams = new URLSearchParams(location.search)
-    const leadId = queryPrams.get('lead_id')
-    if(localStorage.getItem("newapplication")) {
-      dispatch(initGetLead(sessionStorage.getItem('newappleadid')))
-    } else if(leadId && typeof Number(leadId) === 'number'){
-      dispatch(initGetLead(leadId))
-    }else{
-      if(userData && userData.leadId){
-        dispatch(initGetLead(userData.leadId))
+    const isNew = localStorage.getItem("newapplication") === "true";
+    setIsNewApplication(isNew);
+    const userData = localStorageContent.getUserData();
+    const queryPrams = new URLSearchParams(location.search);
+    const leadId = queryPrams.get("lead_id");
+    const leadStatusId = queryPrams.get("lead_id");
+    console.log("veeru", leadId);
+    if (localStorage.getItem("newapplication")) {
+      dispatch(initGetLead(sessionStorage.getItem("newappleadid")));
+    } else if (leadId && typeof Number(leadId) === "number") {
+      dispatch(initGetLead(leadId));
+    } else {
+      if (userData && userData.leadId) {
+        dispatch(initGetLead(userData.leadId));
       }
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    if (leadData) {
+      const { lead_status, lead_id } = leadData;
+      console.log("allcomment", getComments(lead_id));
+      if (lead_status) {
+        setLeadStatusId(lead_status);
+
+        if (lead_status === "4") {
+          dispatch(getReviews(lead_id)); // If reviews are needed
+        } else {
+          dispatch(getComments(lead_id)); // ✅ Use correct leadId
+        }
+      } else {
+        setLeadStatusId("-1");
+      }
+    }
+  }, [leadData]);
 
   return (
-    <div className='user-details'>
-      <div className='user-details__collapses-menu'>
-        <div className='user-details__collapses-menu__header'>
-        {Number(leadData?.lead_status) === 6 && (
-    
-    <>
-    <div className="user-details__collapses-menu__header">
+    <div className="user-details">
+      {showSupportModal && (
+        <ModalPopUp
+          showFooter={false}
+          title="Escalation"
+          show={showSupportModal}
+          toggle={toggleSupportModal}
+          width="50%"
+        >
+          <Support toggleModal={toggleSupportModal} />
+        </ModalPopUp>
+      )}
+      <div className="user-details__collapses-menu">
+        <div className="user-details__collapses-menu">
+          <span
+            className="user-details__collapses-menu__header--link backtodashboard"
+            onClick={() => {
+              localStorage.removeItem("newapplication"); // ✅ Clear flag
+              navigate("/dashboard");
+            }}
+          >
+            Back to dashboard
+          </span>
           <p className="user-details__collapses-menu__header--title">
-            Tax Documents 
+            Fill Your Tax Information
+            <span onClick={toggleSupportModal} className="escalation">
+              <CustomerServiceOutlined
+                title="Escalation"
+                size={40}
+                style={{ color: "red", marginLeft: "10px", fontSize: "24px" }}
+              />
+
+              <span>Escalation</span>
+            </span>
           </p>
-        </div>
+          {!isNewApplication && (
+            <>
+              <Stepper leadStatusId={leadStatusId} />
+              <FileSelection
+                component="selectedReview"
+                leadStatusId={leadData.lead_status}
+                leadId={leadData?.lead_id}
+              />
+              <FileSelection
+                component="taxFile"
+                leadStatusId={leadData.lead_status}
+                leadData={leadData}
+              />
+              <FileSelection
+                component="finaltaxFile"
+                leadStatusId={leadData.lead_status}
+                leadData={leadData}
+              />
+              <FileSelection
+                component="finalofftaxFile"
+                leadStatusId={leadData.lead_status}
+                leadData={leadData}
+              />
 
-      {/* Online and Offline Tax Files */}
-      {leadData.selected_review && (
-        <div style={{ marginBottom: '20px'}}>
-          <div>selected review tax files: </div>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(leadData.selected_review.trim(), '_blank', 'noopener,noreferrer');
-            }}
-          >
-            {leadData.selected_review.split('/').pop().replace(/%20/g, '') || 'Tax file'}
-          </a>
+              <Comments comments={comments} leadId={leadData?.lead_id} />
+              <CommentBox
+                leadStatusId={leadData.lead_status}
+                leadId={leadData?.lead_id}
+              />
+              <ReopenLead
+                isChecked={checkedReopenLead}
+                toggleReopenLeadCheckbox={toggleReopenLeadCheckbox}
+              />
+            </>
+          )}
         </div>
-      )}
-
-      {leadData.online_offline_attachments && (
-        <div style={{ marginBottom: '20px'}}>
-          <div>Online and offline tax files:</div>
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              window.open(leadData.online_offline_attachments.trim(), '_blank', 'noopener,noreferrer');
-            }}
-          >
-            {leadData.online_offline_attachments.split('/').pop().replace(/%20/g, '') || 'Tax file'}
-          </a>
-        </div>
-      )}
-
-      {/* Final Tax Files */}
-      {leadData.online_final_attachments && (
-        <div style={{ marginBottom: '20px'}}>
-          Final tax files:
-          {leadData.online_final_attachments.split(',').map((file: any, index: any) => (
-            <div key={index}>
-              <a
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.open(file.trim(), '_blank', 'noopener,noreferrer');
-                }}
-              >
-                {file.split('/').pop().replace(/%20/g, '') || `Tax file ${index + 1}`}
-              </a>
-            </div>
-          ))}
-        </div>
-      )}
-    </>
-  )}
-
-          <p className='user-details__collapses-menu__header--title'>Fill Your Tax Information</p>
-          <p className='user-details__collapses-menu__header--link' onClick={() => navigate('/dashboard')}>Go to dashboard</p>
-        </div>
-        <Tabs defaultActiveKey={'1'} items={tabItems} />
+        <Tabs defaultActiveKey={"1"} items={tabItems} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default User
+export default User;

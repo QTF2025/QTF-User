@@ -1,73 +1,76 @@
-@import '../../utils/styles/global.scss';
+@import "../../utils/styles/global.scss";
 
-.dashboard{
-    background-color: white !important;
-    padding: 25px;
+.dashboard {
+  background-color: white !important;
+  padding: 25px;
 
-    &__header{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 
-        &--title{
-            
-            p{
-                font-size: 1.2rem;
-                font-weight: 700;
-                margin: 0;
-                padding: 10px;
+    &--title {
+      p {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0;
+        padding: 10px;
 
-                @include breakpoint(md) {
-                    font-size: 1rem;
-                }
-            }
+        @include breakpoint(md) {
+          font-size: 1rem;
         }
-
-        &--reopen{
-            display: flex;
-            align-items: center;
-
-            p{
-                font-size: 1.2rem;
-                font-weight: 700;
-                margin: 0 10px;
-                padding: 10px;
-                color: rgb(235, 102, 102);
-
-                @include breakpoint(md) {
-                    margin: 0 10px 0 0!important;
-                    font-size: 1rem;
-                }
-            }
-        }
+      }
     }
 
-    &__title{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    &--reopen {
+      display: flex;
+      align-items: center;
 
-        p {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0;
-            padding: 10px;
-    
-            @include breakpoint(md) {
-                font-size: 1rem;
-            }
-        }
-    
-        span {
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            color: grey;
-        }
+      p {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 10px;
+        padding: 10px;
+        color: rgb(235, 102, 102);
 
-        svg{
-            cursor: pointer;
+        @include breakpoint(md) {
+          margin: 0 10px 0 0 !important;
+          font-size: 1rem;
         }
+      }
     }
+  }
+
+  &__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin: 0;
+      padding: 10px;
+
+      @include breakpoint(md) {
+        font-size: 1rem;
+      }
+    }
+
+    span {
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: grey;
+    }
+
+    svg {
+      cursor: pointer;
+    }
+  }
+}
+
+.userclickcursos {
+  cursor: pointer;
 }

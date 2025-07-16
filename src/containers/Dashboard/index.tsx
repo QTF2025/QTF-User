@@ -3,6 +3,7 @@ import { Checkbox, Space } from "antd";
 import Icon, {
   CustomerServiceOutlined,
   UsergroupAddOutlined,
+  FileAddOutlined,
 } from "@ant-design/icons";
 
 import Stepper from "./Steps";
@@ -60,23 +61,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (leadData && localStoreData) {
-      const { lead_status } = leadData;
-      if (lead_status) {
-        setLeadStatusId(lead_status);
-
-        if (lead_status === "4") {
-          dispatch(getReviews(localStoreData.leadId));
-        } else {
-          dispatch(getComments(localStoreData.leadId));
-        }
-      } else {
-        setLeadStatusId("-1");
-      }
-    }
-  }, [leadData]);
-
-  useEffect(() => {
+    //console.log("ssss", localStoreData.leadId);
     if (localStoreData) {
       if (
         localStoreData.leadId === "" ||
@@ -85,12 +70,13 @@ const Dashboard = () => {
         navigate("/user");
       } else {
         dispatch(initGetLead(localStoreData.leadId));
+        navigate("/dashboard");
       }
     }
   }, []);
 
   const newApplication = () => {
-    localStorage.setItem("newapplication", "newapplication");
+    localStorage.setItem("newapplication", "true");
     navigate("/user");
   };
 
@@ -126,70 +112,25 @@ const Dashboard = () => {
           <p>Application status</p>
         </div>
         <div className="dashboard__header--reopen">
-          <p style={{ cursor: "pointer" }} onClick={newApplication}>
-            New Application
-          </p>
+          <Space onClick={newApplication} className="userclickcursos">
+            <FileAddOutlined
+              size={40}
+              style={{ color: "red", fontSize: "24px", marginLeft: "20px" }}
+            />
+            <span>New Application</span>
+          </Space>
+
+          <Space onClick={toggleReferealModal} className="userclickcursos">
+            <UsergroupAddOutlined
+              size={40}
+              style={{ color: "red", fontSize: "24px", marginLeft: "20px" }}
+            />
+            <span>Referral</span>
+          </Space>
         </div>
       </div>
       <hr />
       <TaxesList />
-      <Stepper leadStatusId={leadStatusId} />
-      <div className="dashboard__title">
-        <p>
-          {generateTaxYear()} Tax Information -{" "}
-          <span
-            onClick={() => navigate(`/user?lead_id=${localStoreData.leadId}`)}
-          >
-            Click here to find your application
-          </span>
-        </p>
-        <div>
-          <Space onClick={toggleReferealModal}>
-            <UsergroupAddOutlined
-              size={40}
-              style={{ color: "red", fontSize: "24px" }}
-            />
-            <span>Refer a friend</span>
-          </Space>
-          <Space onClick={toggleSupportModal}>
-            <CustomerServiceOutlined
-              title="Escalation"
-              size={40}
-              style={{ color: "red", marginLeft: "10px", fontSize: "24px" }}
-            />
-
-            <span>Support team</span>
-          </Space>
-        </div>
-      </div>
-      <FileSelection
-        component="selectedReview"
-        leadStatusId={leadStatusId}
-        leadData={leadData}
-      />
-      <FileSelection
-        component="taxFile"
-        leadStatusId={leadStatusId}
-        leadData={leadData}
-      />
-      <FileSelection
-        component="finaltaxFile"
-        leadStatusId={leadStatusId}
-        leadData={leadData}
-      />
-
-      <FileSelection
-        component="finalofftaxFile"
-        leadStatusId={leadStatusId}
-        leadData={leadData}
-      />
-
-      <Comments comments={comments} />
-      <CommentBox leadStatusId={leadStatusId} leadId={localStoreData.leadId} />
-      <ReopenLead
-        isChecked={checkedReopenLead}
-        toggleReopenLeadCheckbox={toggleReopenLeadCheckbox}
-      />
     </div>
   );
 };
