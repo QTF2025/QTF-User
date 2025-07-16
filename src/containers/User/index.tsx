@@ -311,7 +311,7 @@ const User = () => {
               <span>Escalation</span>
             </span>
           </p>
-          {!isNewApplication && (
+          {!isNewApplication && leadData && (
             <>
               <Stepper leadStatusId={leadStatusId} />
               <FileSelection
